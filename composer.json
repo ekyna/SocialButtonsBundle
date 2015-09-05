@@ -1,5 +1,5 @@
 {
-    "name" : "ekyna/social-buttons",
+    "name" : "ekyna/social-buttons-bundle",
     "description" : "Social networks buttons for symfony 2",
     "type" : "symfony-bundle",
     "authors" : [{
