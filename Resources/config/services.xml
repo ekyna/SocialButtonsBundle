@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <!--<parameters>
+        <parameter key="ekyna_social_buttons.example.class">Ekyna\Bundle\SocialButtonsBundle\Example</parameter>
+    </parameters>-->
+
+    <services>
+
+        <!-- Helpers -->
+        <service id="ekyna_social_buttons.helper.networks" class="Ekyna\Bundle\SocialButtonsBundle\Helper\Networks">
+            <argument id="translator" type="service" />
+            <argument type="collection" />
+        </service>
+
+        <!-- Twig extension -->
+        <service id="ekyna_social_buttons.twig.buttons_extension" class="Ekyna\Bundle\SocialButtonsBundle\Twig\ButtonsExtension">
+            <argument id="event_dispatcher" type="service" />
+            <argument id="ekyna_social_buttons.helper.networks" type="service" />
+            <argument type="collection" />
+            <tag name="twig.extension" />
+        </service>
+
+    </services>
+
+</container>
