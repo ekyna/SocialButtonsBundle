@@ -91,7 +91,17 @@ class ButtonsExtension extends \Twig_Extension
 
         $buttons = $this->networks->createShareButtons($subject, $networks);
 
-        return $template->renderBlock('share_buttons', array('buttons' => $buttons));
+        $attr = array(
+            'class' => 'social-buttons',
+        );
+        if (array_key_exists('attr', $parameters)) {
+            $attr = array_replace($attr, $parameters['attr']);
+        }
+
+        return $template->renderBlock('share_buttons', array(
+            'buttons' => $buttons,
+            'attr'    => $attr,
+        ));
     }
 
     /**

@@ -1,6 +1,6 @@
 {% block share_buttons %}
 {% spaceless %}
-<ul class="social-buttons">
+<ul{{ block('attributes') }}>
     {% for button in buttons %}
         <li>{{ block('share_button') }}</li>
     {% endfor %}
@@ -16,3 +16,6 @@
 {% endspaceless %}
 {% endblock share_button %}
 
+{% block attributes %}
+{% for key, value in attr %} {{ key }}="{{ value }}"{% endfor %}
+{% endblock attributes %}
