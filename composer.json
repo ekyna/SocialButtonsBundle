@@ -22,11 +22,10 @@
         "symfony/framework-bundle" : "~2.3"
     },
     "autoload" : {
-        "psr-0" : {
-            "Ekyna\\Bundle\\UserBundle" : ""
+        "psr-4" : {
+            "Ekyna\\Bundle\\SocialButtonsBundle\\" : ""
         }
     },
-    "target-dir" : "Ekyna/Bundle/SocialButtonsBundle",
     "extra" : {
         "branch-alias" : {
             "dev-master" : "0.3.x-dev"
