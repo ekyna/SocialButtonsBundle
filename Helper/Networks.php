@@ -80,7 +80,7 @@ class Networks
         ));
         $button->url = str_replace(
             array('[URL]', '[TITLE]'),
-            array($subject->url, $subject->title),
+            array(urlencode($subject->url), urlencode($subject->title)),
             $config['format']
         );
         $button->icon = $config['icon'];
@@ -106,25 +106,25 @@ class Networks
     private function getDefaults()
     {
         return array(
-            'facebook' => array(
-                'title' => 'ekyna_social_buttons.share.facebook',
+            'facebook'  => array(
+                'title'  => 'ekyna_social_buttons.share.facebook',
                 'format' => 'http://www.facebook.com/share.php?u=[URL]&title=[TITLE]',
-                'icon' => 'fa fa-facebook',
+                'icon'   => 'fa fa-facebook',
             ),
-            'twitter' => array(
-                'title' => 'ekyna_social_buttons.share.twitter',
+            'twitter'   => array(
+                'title'  => 'ekyna_social_buttons.share.twitter',
                 'format' => 'http://twitter.com/intent/tweet?status=[TITLE]+[URL]',
-                'icon' => 'fa fa-twitter',
+                'icon'   => 'fa fa-twitter',
             ),
-            'google' => array(
-                'title' => 'ekyna_social_buttons.share.google',
+            'google'    => array(
+                'title'  => 'ekyna_social_buttons.share.google',
                 'format' => 'https://plus.google.com/share?url=[URL]',
-                'icon' => 'fa fa-google-plus',
+                'icon'   => 'fa fa-google-plus',
             ),
             'pinterest' => array(
-                'title' => 'ekyna_social_buttons.share.pinterest',
+                'title'  => 'ekyna_social_buttons.share.pinterest',
                 'format' => 'http://pinterest.com/pin/create/bookmarklet/?url=[URL]&is_video=false&description=[TITLE]', // &media=[MEDIA]
-                'icon' => 'fa fa-pinterest',
+                'icon'   => 'fa fa-pinterest',
             ),
         );
     }
