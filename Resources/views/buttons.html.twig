@@ -1,0 +1,21 @@
+{% block share_buttons %}
+{% spaceless %}
+<ul{{ block('attributes') }}>
+    {% for button in buttons %}
+        <li>{{ block('share_button') }}</li>
+    {% endfor %}
+</ul>
+{% endspaceless %}
+{% endblock share_buttons %}
+
+{% block share_button %}
+{% spaceless %}
+<a class="social-button social-button-{{ button.name }}" href="{{ button.url }}" title="{{ button.title }}">
+    <i class="{{ button.icon }}"></i>
+</a>
+{% endspaceless %}
+{% endblock share_button %}
+
+{% block attributes %}
+{% for key, value in attr %} {{ key }}="{{ value }}"{% endfor %}
+{% endblock attributes %}

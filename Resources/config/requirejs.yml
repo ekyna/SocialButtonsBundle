@@ -1,0 +1,9 @@
+config:
+    shim:
+        'ekyna-social-buttons/share':
+            deps: ['jquery']
+    paths:
+        'ekyna-social-buttons/share': 'bundles/ekynasocialbuttons/js/share'
+build:
+    include:
+        - 'ekyna-social-buttons/share'

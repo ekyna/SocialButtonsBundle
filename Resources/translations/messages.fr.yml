@@ -1,0 +1,7 @@
+ekyna_social_buttons:
+    share:
+        facebook: Partager {title} sur Facebook
+        google: Partager {title} sur Google+
+        twitter: Partager {title} sur Twitter
+        pinterest: Partager {title} sur Pinterest
+        email: Partager {title} par e-mail
