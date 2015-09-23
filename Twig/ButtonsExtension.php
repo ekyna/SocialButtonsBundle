@@ -71,10 +71,10 @@ class ButtonsExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('social_share_buttons', array($this, 'renderSocialShareButtons'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFunction('social_share_button', array($this, 'renderSocialShareButton'), array('is_safe' => array('html'))),
-        );
+        return [
+            new \Twig_SimpleFunction('social_share_buttons', [$this, 'renderSocialShareButtons'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('social_share_button', [$this, 'renderSocialShareButton'], ['is_safe' => ['html']]),
+        ];
     }
 
     /**
@@ -83,25 +83,25 @@ class ButtonsExtension extends \Twig_Extension
      * @param array $parameters
      * @return string
      */
-    public function renderSocialShareButtons(array $parameters = array())
+    public function renderSocialShareButtons(array $parameters = [])
     {
         $subject = $this->resolveSubject($parameters);
-        $networks = isset($parameters['networks']) ? (array) $parameters['networks'] : array();
+        $networks = isset($parameters['networks']) ? (array) $parameters['networks'] : [];
         $template = $this->resolveTemplate(isset($parameters['template']) ?: null);
 
         $buttons = $this->networks->createShareButtons($subject, $networks);
 
-        $attr = array(
+        $attr = [
             'class' => 'social-buttons',
-        );
+        ];
         if (array_key_exists('attr', $parameters)) {
             $attr = array_replace($attr, $parameters['attr']);
         }
 
-        return $template->renderBlock('share_buttons', array(
+        return $template->renderBlock('share_buttons', [
             'buttons' => $buttons,
             'attr'    => $attr,
-        ));
+        ]);
     }
 
     /**
@@ -110,7 +110,7 @@ class ButtonsExtension extends \Twig_Extension
      * @param array $parameters
      * @return string
      */
-    public function renderSocialShareButton(array $parameters = array())
+    public function renderSocialShareButton(array $parameters = [])
     {
         if (!array_key_exists('network', $parameters)) {
             throw new InvalidArgumentException('Network is mandatory.');
@@ -121,7 +121,7 @@ class ButtonsExtension extends \Twig_Extension
 
         $button = $this->networks->createShareButton($network, $subject);
 
-        return $template->renderBlock('share_button', array('button' => $button));
+        return $template->renderBlock('share_button', ['button' => $button]);
     }
 
     /**
@@ -131,7 +131,7 @@ class ButtonsExtension extends \Twig_Extension
      * @return Subject
      * @throws SubjectNotFoundException
      */
-    private function resolveSubject(array $parameters = array())
+    private function resolveSubject(array $parameters = [])
     {
         if (array_key_exists('url', $parameters) && array_key_exists('title', $parameters)) {
             $subject = new Subject();
