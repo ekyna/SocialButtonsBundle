@@ -44,13 +44,13 @@ class Networks
      * @param array   $names   The networks name
      * @return Button[]
      */
-    public function createShareButtons(Subject $subject, array $names = array())
+    public function createShareButtons(Subject $subject, array $names = [])
     {
         if (empty($names)) {
             $names = $this->getNetworksNames();
         }
 
-        $buttons = array();
+        $buttons = [];
 
         foreach ($names as $name) {
             $buttons[] = $this->createShareButton($name, $subject);
@@ -75,12 +75,12 @@ class Networks
 
         $button = new Button();
         $button->name = $name;
-        $button->title = $this->translator->trans($config['title'], array(
+        $button->title = $this->translator->trans($config['title'], [
             '{title}' => $subject->title,
-        ));
+        ]);
         $button->url = str_replace(
-            array('[URL]', '[TITLE]'),
-            array(urlencode($subject->url), urlencode($subject->title)),
+            ['[URL]', '[TITLE]'],
+            [urlencode($subject->url), urlencode($subject->title)],
             $config['format']
         );
         $button->icon = $config['icon'];
@@ -105,27 +105,27 @@ class Networks
      */
     private function getDefaults()
     {
-        return array(
-            'facebook'  => array(
+        return [
+            'facebook'  => [
                 'title'  => 'ekyna_social_buttons.share.facebook',
                 'format' => 'http://www.facebook.com/share.php?u=[URL]&title=[TITLE]',
                 'icon'   => 'fa fa-facebook',
-            ),
-            'twitter'   => array(
+            ],
+            'twitter'   => [
                 'title'  => 'ekyna_social_buttons.share.twitter',
                 'format' => 'http://twitter.com/intent/tweet?status=[TITLE]+[URL]',
                 'icon'   => 'fa fa-twitter',
-            ),
-            'google'    => array(
+            ],
+            'google'    => [
                 'title'  => 'ekyna_social_buttons.share.google',
                 'format' => 'https://plus.google.com/share?url=[URL]',
                 'icon'   => 'fa fa-google-plus',
-            ),
-            'pinterest' => array(
+            ],
+            'pinterest' => [
                 'title'  => 'ekyna_social_buttons.share.pinterest',
                 'format' => 'http://pinterest.com/pin/create/bookmarklet/?url=[URL]&is_video=false&description=[TITLE]', // &media=[MEDIA]
                 'icon'   => 'fa fa-pinterest',
-            ),
-        );
+            ],
+        ];
     }
 }

@@ -28,7 +28,7 @@ class SubjectEvent extends Event
      *
      * @param array $parameters
      */
-    public function __construct(array $parameters = array())
+    public function __construct(array $parameters = [])
     {
         $this->parameters = $parameters;
     }
