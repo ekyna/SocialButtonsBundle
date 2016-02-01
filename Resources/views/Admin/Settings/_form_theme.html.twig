@@ -1,0 +1,19 @@
+{% extends "EkynaAdminBundle:Form:form_div_layout.html.twig" %}
+
+{% block ekyna_social_buttons_link_widget %}
+{% spaceless %}
+<div class="form-group">
+    <div class="col-md-4">
+        {{ form_widget(form.icon) }}
+    </div>
+    <div class="col-md-8">
+        {{ form_widget(form.title) }}
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-12">
+        {{ form_widget(form.url) }}
+    </div>
+</div>
+{% endspaceless %}
+{% endblock ekyna_social_buttons_link_widget %}

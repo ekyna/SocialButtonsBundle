@@ -23,6 +23,7 @@ class Configuration implements ConfigurationInterface
 
         $this->addDefaultsSection($rootNode);
         $this->addNetworksSection($rootNode);
+        $this->addLinksSection($rootNode);
 
         return $treeBuilder;
     }
@@ -39,7 +40,11 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('defaults')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('template')->defaultValue('EkynaSocialButtonsBundle::buttons.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('icon_prefix')->defaultValue('fa fa-')->cannotBeEmpty()->end()
+                        ->scalarNode('template')
+                            ->defaultValue('EkynaSocialButtonsBundle::buttons.html.twig')
+                            ->cannotBeEmpty()
+                        ->end()
                     ->end()
                 ->end()
             ->end()
@@ -61,7 +66,30 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('title')->defaultValue('')->end() // TODO default trans
                             ->scalarNode('format')->isRequired()->end()
-                            ->scalarNode('icon')->isRequired()->end()
+                            ->scalarNode('icon')->isRequired()->end() // TODO validation
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * Builds the networks node definition.
+     *
+     * @param ArrayNodeDefinition $node
+     */
+    private function addLinksSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('links')
+                    ->useAttributeAsKey('name')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('icon')->isRequired()->end() // TODO validation
+                            ->scalarNode('title')->defaultNull()->end()
+                            ->scalarNode('url')->isRequired()->end() // TODO validation
                         ->end()
                     ->end()
                 ->end()
