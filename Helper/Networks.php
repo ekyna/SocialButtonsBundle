@@ -109,22 +109,22 @@ class Networks
             'facebook'  => [
                 'title'  => 'ekyna_social_buttons.share.facebook',
                 'format' => 'http://www.facebook.com/share.php?u=[URL]&title=[TITLE]',
-                'icon'   => 'fa fa-facebook',
+                'icon'   => 'facebook',
             ],
             'twitter'   => [
                 'title'  => 'ekyna_social_buttons.share.twitter',
                 'format' => 'http://twitter.com/intent/tweet?status=[TITLE]+[URL]',
-                'icon'   => 'fa fa-twitter',
+                'icon'   => 'twitter',
             ],
             'google'    => [
                 'title'  => 'ekyna_social_buttons.share.google',
                 'format' => 'https://plus.google.com/share?url=[URL]',
-                'icon'   => 'fa fa-google-plus',
+                'icon'   => 'google-plus',
             ],
             'pinterest' => [
                 'title'  => 'ekyna_social_buttons.share.pinterest',
                 'format' => 'http://pinterest.com/pin/create/bookmarklet/?url=[URL]&is_video=false&description=[TITLE]', // &media=[MEDIA]
-                'icon'   => 'fa fa-pinterest',
+                'icon'   => 'pinterest',
             ],
         ];
     }

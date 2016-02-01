@@ -1,0 +1,21 @@
+<div class="row show-row">
+    <div class="col-md-3 show-label">
+        {{ 'ekyna_social_buttons.link.label.plural'|trans }}
+    </div>
+    <div class="col-md-9">
+        <div class="show-widget show-widget-block">
+            {% for link in settings.social.links %}
+            <p>
+                <a href="{{ link.url }}" target="_blank" title="{{ link.title }}">
+                    <span class="fa fa-{{ link.icon }}"></span>
+                    {% if link.title is not empty %}
+                        {{ link.title }}
+                    {% else %}
+                        {{ link.url }}
+                    {% endif %}
+                </a>
+            </p>
+            {% endfor %}
+        </div>
+    </div>
+</div>

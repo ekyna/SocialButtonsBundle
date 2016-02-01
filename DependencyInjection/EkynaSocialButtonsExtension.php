@@ -28,7 +28,12 @@ class EkynaSocialButtonsExtension extends Extension
         $networksHelper = $container->getDefinition('ekyna_social_buttons.helper.networks');
         $networksHelper->replaceArgument(1, $config['networks']);
 
+        $twigExtensionConfig = [
+            'icon_prefix' => $config['defaults']['icon_prefix'],
+            'template'    => $config['defaults']['template'],
+            'links'       => $config['links'],
+        ];
         $twigExtension = $container->getDefinition('ekyna_social_buttons.twig.buttons_extension');
-        $twigExtension->replaceArgument(2, $config['defaults']);
+        $twigExtension->replaceArgument(2, $twigExtensionConfig);
     }
 }

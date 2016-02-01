@@ -1,16 +1,19 @@
-ul.social-buttons {
+ul.social-link-buttons,
+ul.social-share-buttons {
     margin: 0;
     padding: 0;
 }
 
-ul.social-buttons li {
+ul.social-link-buttons li,
+ul.social-share-buttons li {
     list-style: none;
     display: inline-block;
     margin: 0 12px 12px 0;
     padding: 0;
 }
 
-ul.social-buttons a.social-button {
+a.social-link-button,
+a.social-share-button {
     background-color: #444444;
     border-radius: 12px;
     color: #ffffff;
@@ -21,6 +24,7 @@ ul.social-buttons a.social-button {
     width: 24px;
 }
 
-ul.social-buttons a.social-button:hover {
+a.social-link-button:hover,
+a.social-share-button:hover {
     background-color: #337ab7;
 }

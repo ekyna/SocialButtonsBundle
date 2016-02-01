@@ -2,11 +2,13 @@
 
 namespace Ekyna\Bundle\SocialButtonsBundle\Twig;
 
+use Ekyna\Bundle\SettingBundle\Manager\SettingsManagerInterface;
 use Ekyna\Bundle\SocialButtonsBundle\Event\SubjectEvent;
 use Ekyna\Bundle\SocialButtonsBundle\Event\SubjectEvents;
 use Ekyna\Bundle\SocialButtonsBundle\Exception\InvalidArgumentException;
 use Ekyna\Bundle\SocialButtonsBundle\Exception\SubjectNotFoundException;
 use Ekyna\Bundle\SocialButtonsBundle\Helper\Networks;
+use Ekyna\Bundle\SocialButtonsBundle\Model\Link;
 use Ekyna\Bundle\SocialButtonsBundle\Share\Subject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -26,6 +28,11 @@ class ButtonsExtension extends \Twig_Extension
      * @var Networks
      */
     private $networks;
+
+    /**
+     * @var SettingsManagerInterface
+     */
+    private $settingsManager;
 
     /**
      * @var array
@@ -67,18 +74,67 @@ class ButtonsExtension extends \Twig_Extension
     }
 
     /**
+     * Sets the settings manager.
+     *
+     * @param SettingsManagerInterface $manager
+     */
+    public function setSettingsManager(SettingsManagerInterface $manager)
+    {
+        $this->settingsManager = $manager;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getFunctions()
     {
         return [
+            new \Twig_SimpleFunction('social_link_buttons',  [$this, 'renderSocialLinkButtons'],  ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('social_share_buttons', [$this, 'renderSocialShareButtons'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('social_share_button', [$this, 'renderSocialShareButton'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('social_share_button',  [$this, 'renderSocialShareButton'],  ['is_safe' => ['html']]),
         ];
     }
 
     /**
-     * Renders the social buttons.
+     * Renders the social link buttons.
+     *
+     * @param array $parameters
+     * @return string
+     */
+    public function renderSocialLinkButtons(array $parameters = [])
+    {
+        $links = [];
+        if ($this->settingsManager) {
+            $links = $this->settingsManager->getParameter('social.links');
+        }
+        if (empty($links)) {
+            foreach ($this->config['links'] as $name => $config) {
+                $links[] = new Link($name, $config['icon'], $config['url'], $config['title']);
+            }
+        }
+
+        if (empty($links)) {
+            return '';
+        }
+
+        $attr = [
+            'class' => 'social-link-buttons',
+        ];
+        if (array_key_exists('attr', $parameters)) {
+            $attr = array_replace($attr, $parameters['attr']);
+        }
+
+        $template = $this->resolveTemplate(isset($parameters['template']) ?: null);
+
+        return $template->renderBlock('link_buttons', [
+            'icon_prefix' => $this->config['icon_prefix'],
+            'links'       => $links,
+            'attr'        => $attr,
+        ]);
+    }
+
+    /**
+     * Renders the social share buttons.
      *
      * @param array $parameters
      * @return string
@@ -91,21 +147,26 @@ class ButtonsExtension extends \Twig_Extension
 
         $buttons = $this->networks->createShareButtons($subject, $networks);
 
+        if (empty($buttons)) {
+            return '';
+        }
+
         $attr = [
-            'class' => 'social-buttons',
+            'class' => 'social-share-buttons',
         ];
         if (array_key_exists('attr', $parameters)) {
             $attr = array_replace($attr, $parameters['attr']);
         }
 
         return $template->renderBlock('share_buttons', [
-            'buttons' => $buttons,
-            'attr'    => $attr,
+            'icon_prefix' => $this->config['icon_prefix'],
+            'buttons'     => $buttons,
+            'attr'        => $attr,
         ]);
     }
 
     /**
-     * Renders the social buttons.
+     * Renders the social share buttons.
      *
      * @param array $parameters
      * @return string
@@ -121,11 +182,14 @@ class ButtonsExtension extends \Twig_Extension
 
         $button = $this->networks->createShareButton($network, $subject);
 
-        return $template->renderBlock('share_button', ['button' => $button]);
+        return $template->renderBlock('share_button', [
+            'icon_prefix' => $this->config['icon_prefix'],
+            'button'      => $button,
+        ]);
     }
 
     /**
-     * Resolves the subject.
+     * Resolves the share subject.
      *
      * @param array $parameters
      * @return Subject

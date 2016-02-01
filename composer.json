@@ -2,7 +2,8 @@
     "name" : "ekyna/social-buttons-bundle",
     "description" : "Social networks buttons for symfony 2",
     "type" : "symfony-bundle",
-    "authors" : [{
+    "authors" : [
+        {
             "name" : "Etienne Dauvergne",
             "homepage" : "http://ekyna.com"
         }
