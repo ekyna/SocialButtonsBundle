@@ -31,22 +31,6 @@ class Link
 
 
     /**
-     * Constructor.
-     *
-     * @param string $name
-     * @param string $icon
-     * @param string $url
-     * @param string $title
-     */
-    public function __construct($name, $icon, $url, $title = null)
-    {
-        $this->name = $name;
-        $this->icon = $icon;
-        $this->url = $url;
-        $this->title = $title;
-    }
-
-    /**
      * Sets the name.
      *
      * @param string $name

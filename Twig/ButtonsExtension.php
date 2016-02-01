@@ -109,7 +109,14 @@ class ButtonsExtension extends \Twig_Extension
         }
         if (empty($links)) {
             foreach ($this->config['links'] as $name => $config) {
-                $links[] = new Link($name, $config['icon'], $config['url'], $config['title']);
+                $link = new Link();
+                $link
+                    ->setName($name)
+                    ->setIcon($config['icon'])
+                    ->setUrl($config['url'])
+                    ->setTitle($config['title'])
+                ;
+                $links[] = $link;
             }
         }
 
