@@ -40,6 +40,7 @@ class Schema extends AbstractSchema
                 'label'      => 'ekyna_social_buttons.link.label.plural',
                 'type'       => new LinkType(),
                 'allow_sort' => true,
+                'required'   => false,
             ))
         ;
     }
