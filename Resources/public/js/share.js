@@ -35,7 +35,7 @@
     };
 
     var init = function() {
-        $('.social-buttons').on('click', 'a.social-button', {}, function popUp(e) {
+        $('.social-share-buttons').on('click', 'a.social-share-button', {}, function popUp(e) {
             e.preventDefault();
             e.stopPropagation();
 

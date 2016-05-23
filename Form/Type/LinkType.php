@@ -4,6 +4,7 @@ namespace Ekyna\Bundle\SocialButtonsBundle\Form\Type;
 
 use Ekyna\Bundle\SocialButtonsBundle\Model\Icons;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,23 +21,23 @@ class LinkType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('icon', 'choice', [
-                'label'       => false,
-                'choices'     => Icons::getChoices(),
-                'attr' => [
+            ->add('icon', Type\ChoiceType::class, [
+                'label'   => false,
+                'choices' => Icons::getChoices(),
+                'attr'    => [
                     'placeholder' => 'ekyna_social_buttons.link.field.icon',
                 ],
             ])
-            ->add('title', 'text', [
-                'label'       => false,
-                'required'    => false,
-                'attr' => [
+            ->add('title', Type\TextType::class, [
+                'label'    => false,
+                'required' => false,
+                'attr'     => [
                     'placeholder' => 'ekyna_social_buttons.link.field.title',
                 ],
             ])
-            ->add('url', 'url', [
-                'label'       => false,
-                'attr' => [
+            ->add('url', Type\UrlType::class, [
+                'label' => false,
+                'attr'  => [
                     'placeholder' => 'ekyna_social_buttons.link.field.url',
                 ],
             ]);
