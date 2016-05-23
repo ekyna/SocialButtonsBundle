@@ -2,8 +2,7 @@
 
 namespace Ekyna\Bundle\SocialButtonsBundle\Settings;
 
-use Ekyna\Bundle\GoogleBundle\Form\Type\TrackingCodeType;
-use Ekyna\Bundle\GoogleBundle\Model\TrackingCode;
+use Ekyna\Bundle\CoreBundle\Form\Type\CollectionType;
 use Ekyna\Bundle\SettingBundle\Schema\AbstractSchema;
 use Ekyna\Bundle\SettingBundle\Schema\SettingsBuilder;
 use Ekyna\Bundle\SocialButtonsBundle\Form\Type\LinkType;
@@ -13,7 +12,7 @@ use Symfony\Component\Validator\Constraints;
 /**
  * Class Schema
  * @package Ekyna\Bundle\SocialButtonsBundle\Settings
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class Schema extends AbstractSchema
 {
@@ -24,10 +23,9 @@ class Schema extends AbstractSchema
     {
         $builder
             ->setDefaults(array_merge([
-                'links' => array(),
+                'links' => [],
             ], $this->defaults))
-            ->setAllowedTypes('links', 'array')
-        ;
+            ->setAllowedTypes('links', 'array');
     }
 
     /**
@@ -36,13 +34,12 @@ class Schema extends AbstractSchema
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('links', 'ekyna_collection', array(
+            ->add('links', CollectionType::class, [
                 'label'      => 'ekyna_social_buttons.link.label.plural',
-                'type'       => new LinkType(),
+                'entry_type' => LinkType::class,
                 'allow_sort' => true,
                 'required'   => false,
-            ))
-        ;
+            ]);
     }
 
     /**
