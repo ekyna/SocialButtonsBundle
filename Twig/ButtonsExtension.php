@@ -229,6 +229,7 @@ class ButtonsExtension extends \Twig_Extension
     private function resolveTemplate($name = null)
     {
         if (0 < strlen($name)) {
+            /** @noinspection PhpIncompatibleReturnTypeInspection */
             return $this->environment->loadTemplate($name);
         }
         return $this->defaultTemplate;

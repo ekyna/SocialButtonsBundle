@@ -2,15 +2,28 @@
 
 namespace Ekyna\Bundle\SocialButtonsBundle\Model;
 
-use Ekyna\Bundle\CoreBundle\Model\AbstractConstants;
-
 /**
  * Class Icons
  * @package Ekyna\Bundle\SocialButtonsBundle\Model
  * @author  Etienne Dauvergne <contact@ekyna.com>
  */
-final class Icons extends AbstractConstants
+final class Icons
 {
+    /**
+     * Returns the constant choices.
+     *
+     * @return array
+     */
+    public static function getChoices()
+    {
+        $choices = [];
+        foreach (static::getConfig() as $constant => $config) {
+            $choices[$config[0]] = $constant;
+        }
+
+        return $choices;
+    }
+
     /**
      * {@inheritdoc}
      */
