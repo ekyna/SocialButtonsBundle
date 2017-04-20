@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SocialButtonsBundle\Event;
 
 use Ekyna\Bundle\SocialButtonsBundle\Model\Subject;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class SubjectEvent
@@ -12,15 +14,8 @@ use Symfony\Component\EventDispatcher\Event;
  */
 final class SubjectEvent extends Event
 {
-    /**
-     * @var array
-     */
-    private $parameters;
-
-    /**
-     * @var Subject
-     */
-    private $subject;
+    private array    $parameters;
+    private ?Subject $subject = null;
 
 
     /**

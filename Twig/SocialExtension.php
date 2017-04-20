@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SocialButtonsBundle\Twig;
 
 use Ekyna\Bundle\SocialButtonsBundle\Service\SocialRenderer;
@@ -13,10 +15,7 @@ use Twig\TwigFunction;
  */
 class SocialExtension extends AbstractExtension
 {
-    /**
-     * @inheritDoc
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction(

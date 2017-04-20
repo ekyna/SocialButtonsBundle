@@ -1,15 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SocialButtonsBundle\DependencyInjection;
 
+use Ekyna\Bundle\SettingBundle\DependencyInjection\Compiler\RegisterSchemasPass;
 use Ekyna\Bundle\SocialButtonsBundle\Service\SettingSchema;
 use Ekyna\Bundle\SocialButtonsBundle\Service\SocialHelper;
 use Ekyna\Bundle\SocialButtonsBundle\Service\SocialRenderer;
-use Symfony\Component\Config\FileLocator;
+use Ekyna\Bundle\SocialButtonsBundle\Twig\SocialExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+
+use function array_key_exists;
 
 /**
  * Class EkynaSocialButtonsExtension
@@ -18,56 +22,40 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class EkynaSocialButtonsExtension extends Extension
 {
-    /**
-     * @inheritDoc
-     */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $configuration = new Configuration();
-        $config        = $this->processConfiguration($configuration, $configs);
+        $config = $this->processConfiguration(new Configuration(), $configs);
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.xml');
+        $container
+            ->register('ekyna_social_buttons.helper', SocialHelper::class)
+            ->setArguments([
+                new Reference('translator'),
+                $config['networks'],
+            ]);
 
-        $this->configureHelper($container, $config);
-        $this->configureRenderer($container, $config);
+        $container
+            ->register('ekyna_social_buttons.renderer', SocialRenderer::class)
+            ->setArguments([
+                new Reference('ekyna_social_buttons.helper'),
+                new Reference('event_dispatcher'),
+                new Reference('twig'),
+                [
+                    'icon_prefix' => $config['defaults']['icon_prefix'],
+                    'template'    => $config['defaults']['template'],
+                    'links'       => $config['links'],
+                ],
+            ])
+            ->addTag('twig.runtime');
+
+        $container
+            ->register('ekyna_social_buttons.twig_extension', SocialExtension::class)
+            ->addTag('twig.extension');
+
         $this->configureSetting($container);
     }
 
     /**
-     * Configures the helper.
-     *
-     * @param ContainerBuilder $container
-     * @param array            $config
-     */
-    private function configureHelper(ContainerBuilder $container, array $config): void
-    {
-        $container
-            ->getDefinition(SocialHelper::class)
-            ->replaceArgument(1, $config['networks']);
-    }
-
-    /**
-     * Configures the renderer.
-     *
-     * @param ContainerBuilder $container
-     * @param array            $config
-     */
-    private function configureRenderer(ContainerBuilder $container, array $config): void
-    {
-        $container
-            ->getDefinition(SocialRenderer::class)
-            ->replaceArgument(3, [
-                'icon_prefix' => $config['defaults']['icon_prefix'],
-                'template'    => $config['defaults']['template'],
-                'links'       => $config['links'],
-            ]);
-    }
-
-    /**
      * Configures the setting services.
-     *
-     * @param ContainerBuilder $container
      */
     private function configureSetting(ContainerBuilder $container): void
     {
@@ -78,16 +66,15 @@ class EkynaSocialButtonsExtension extends Extension
 
         // Setting schema
         $container
-            ->register(SettingSchema::class)
-            ->setPublic(false)
-            ->addTag('ekyna_setting.schema', [
+            ->register('ekyna_social_buttons.setting_schema', SettingSchema::class)
+            ->addTag(RegisterSchemasPass::TAG, [
                 'namespace' => 'social',
                 'position'  => 99,
             ]);
 
         // Renderer
         $container
-            ->getDefinition(SocialRenderer::class)
+            ->getDefinition('ekyna_social_buttons.renderer')
             ->addMethodCall('setSetting', [new Reference('ekyna_setting.manager')]);
     }
 }

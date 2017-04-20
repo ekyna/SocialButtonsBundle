@@ -1,12 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SocialButtonsBundle\Service;
 
-use Ekyna\Bundle\CoreBundle\Form\Type\CollectionType;
 use Ekyna\Bundle\SettingBundle\Schema\AbstractSchema;
 use Ekyna\Bundle\SettingBundle\Schema\SettingsBuilder;
 use Ekyna\Bundle\SocialButtonsBundle\Form\Type\LinkType;
+use Ekyna\Bundle\UiBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Contracts\Translation\TranslatableInterface;
+
+use function Symfony\Component\Translation\t;
 
 /**
  * Class SettingSchema
@@ -15,10 +20,7 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class SettingSchema extends AbstractSchema
 {
-    /**
-     * @inheritDoc
-     */
-    public function buildSettings(SettingsBuilder $builder)
+    public function buildSettings(SettingsBuilder $builder): void
     {
         $builder
             ->setDefaults(array_merge([
@@ -27,40 +29,28 @@ class SettingSchema extends AbstractSchema
             ->setAllowedTypes('links', 'array');
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('links', CollectionType::class, [
-                'label'      => 'ekyna_social_buttons.link.label.plural',
+                'label'      => t('link.label.plural', [], 'EkynaSocialButtons'),
                 'entry_type' => LinkType::class,
                 'allow_sort' => true,
                 'required'   => false,
             ]);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getLabel()
+    public function getLabel(): TranslatableInterface
     {
-        return 'ekyna_social_buttons.settings.label';
+        return t('settings.label', [], 'EkynaSocialButtons');
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getShowTemplate()
+    public function getShowTemplate(): string
     {
         return '@EkynaSocialButtons/Admin/Settings/show.html.twig';
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getFormTemplate()
+    public function getFormTemplate(): string
     {
         return '@EkynaSocialButtons/Admin/Settings/form.html.twig';
     }
