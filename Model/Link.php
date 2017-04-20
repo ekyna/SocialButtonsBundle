@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SocialButtonsBundle\Model;
 
 /**
@@ -9,115 +11,56 @@ namespace Ekyna\Bundle\SocialButtonsBundle\Model;
  */
 final class Link
 {
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $icon;
-
-    /**
-     * @var string
-     */
-    private $url;
-
-    /**
-     * @var string
-     */
-    private $title;
+    private ?string $name  = null;
+    private ?string $icon  = null;
+    private ?string $url   = null;
+    private ?string $title = null;
 
 
-    /**
-     * Sets the name.
-     *
-     * @param string $name
-     *
-     * @return Link
-     */
-    public function setName($name)
+    public function setName(?string $name): Link
     {
         $this->name = $name;
+
         return $this;
     }
 
-    /**
-     * Returns the name.
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return 0 < strlen($this->name) ? $this->name : $this->icon;
     }
 
-    /**
-     * Sets the icon.
-     *
-     * @param string $icon
-     *
-     * @return Link
-     */
-    public function setIcon($icon)
+    public function setIcon(?string $icon): Link
     {
         $this->icon = $icon;
+
         return $this;
     }
 
-    /**
-     * Returns the icon.
-     *
-     * @return string
-     */
-    public function getIcon()
+    public function getIcon(): ?string
     {
         return $this->icon;
     }
 
-    /**
-     * Sets the url.
-     *
-     * @param string $url
-     *
-     * @return Link
-     */
-    public function setUrl($url)
+    public function setUrl(?string $url): Link
     {
         $this->url = $url;
+
         return $this;
     }
 
-    /**
-     * Returns the url.
-     *
-     * @return string
-     */
-    public function getUrl()
+    public function getUrl(): ?string
     {
         return $this->url;
     }
 
-    /**
-     * Sets the title.
-     *
-     * @param string $title
-     *
-     * @return Link
-     */
-    public function setTitle($title)
+    public function setTitle(?string $title): Link
     {
         $this->title = $title;
+
         return $this;
     }
 
-    /**
-     * Returns the title.
-     *
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }

@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SocialButtonsBundle\Service;
 
-use Ekyna\Bundle\SettingBundle\Manager\SettingsManagerInterface;
+use Ekyna\Bundle\SettingBundle\Manager\SettingManagerInterface;
 use Ekyna\Bundle\SocialButtonsBundle\Event\SubjectEvent;
 use Ekyna\Bundle\SocialButtonsBundle\Event\SubjectEvents;
 use Ekyna\Bundle\SocialButtonsBundle\Exception\InvalidArgumentException;
@@ -11,7 +13,6 @@ use Ekyna\Bundle\SocialButtonsBundle\Model\Link;
 use Ekyna\Bundle\SocialButtonsBundle\Model\Subject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
-use Twig\Extension\RuntimeExtensionInterface;
 use Twig\TemplateWrapper;
 
 /**
@@ -19,47 +20,16 @@ use Twig\TemplateWrapper;
  * @package Ekyna\Bundle\SocialButtonsBundle\Service\Renderer
  * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-class SocialRenderer implements RuntimeExtensionInterface
+class SocialRenderer
 {
-    /**
-     * @var SocialHelper
-     */
-    private $helper;
+    private SocialHelper $helper;
+    private EventDispatcherInterface $dispatcher;
+    private Environment $engine;
+    private array $config;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
+    private SettingManagerInterface $setting;
+    private ?TemplateWrapper $template = null;
 
-    /**
-     * @var Environment
-     */
-    private $engine;
-
-    /**
-     * @var array
-     */
-    private $config;
-
-    /**
-     * @var SettingsManagerInterface
-     */
-    private $setting;
-
-    /**
-     * @var TemplateWrapper
-     */
-    private $template;
-
-
-    /**
-     * Constructor.
-     *
-     * @param SocialHelper             $helper
-     * @param EventDispatcherInterface $dispatcher
-     * @param Environment              $engine
-     * @param array                    $config
-     */
     public function __construct(
         SocialHelper $helper,
         EventDispatcherInterface $dispatcher,
@@ -74,20 +44,14 @@ class SocialRenderer implements RuntimeExtensionInterface
 
     /**
      * Sets the setting manager.
-     *
-     * @param SettingsManagerInterface $setting
      */
-    public function setSetting(SettingsManagerInterface $setting): void
+    public function setSetting(SettingManagerInterface $setting): void
     {
         $this->setting = $setting;
     }
 
     /**
      * Renders the social link buttons.
-     *
-     * @param array $parameters
-     *
-     * @return string
      */
     public function renderSocialLinkButtons(array $parameters = []): string
     {
@@ -134,10 +98,6 @@ class SocialRenderer implements RuntimeExtensionInterface
 
     /**
      * Renders the social share buttons.
-     *
-     * @param array $parameters
-     *
-     * @return string
      */
     public function renderSocialShareButtons(array $parameters = []): string
     {
@@ -171,10 +131,6 @@ class SocialRenderer implements RuntimeExtensionInterface
 
     /**
      * Renders the social share buttons.
-     *
-     * @param array $parameters
-     *
-     * @return string
      */
     public function renderSocialShareButton(array $parameters = []): string
     {
@@ -204,9 +160,6 @@ class SocialRenderer implements RuntimeExtensionInterface
     /**
      * Resolves the share subject.
      *
-     * @param array $parameters
-     *
-     * @return Subject
      * @throws SubjectNotFoundException
      */
     private function resolveSubject(array $parameters = []): Subject
@@ -220,7 +173,7 @@ class SocialRenderer implements RuntimeExtensionInterface
         }
 
         $event = new SubjectEvent($parameters);
-        $this->dispatcher->dispatch(SubjectEvents::RESOLVE, $event);
+        $this->dispatcher->dispatch($event, SubjectEvents::RESOLVE);
         if (null !== $subject = $event->getSubject()) {
             return $subject;
         }
@@ -230,10 +183,6 @@ class SocialRenderer implements RuntimeExtensionInterface
 
     /**
      * Resolves the template to use to render the button(s).
-     *
-     * @param string|null $name
-     *
-     * @return TemplateWrapper
      */
     private function resolveTemplate(string $name = null): TemplateWrapper
     {

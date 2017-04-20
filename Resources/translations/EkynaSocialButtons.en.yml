@@ -1,0 +1,15 @@
+settings:
+    label: Social networks
+share:
+    facebook: Share {title} on Facebook
+    google: Share {title} on Google+
+    twitter: Share {title} on Twitter
+    pinterest: Share {title} on Pinterest
+link:
+    label:
+        singular: Link
+        plural: Links
+    field:
+        icon: Icon
+        url: Url
+        title: Title

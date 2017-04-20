@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SocialButtonsBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -13,13 +15,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('ekyna_social_buttons');
+        $treeBuilder = new TreeBuilder('ekyna_social_buttons');
+
+        $rootNode = $treeBuilder->getRootNode();
 
         $this->addDefaultsSection($rootNode);
         $this->addNetworksSection($rootNode);
@@ -30,8 +30,6 @@ class Configuration implements ConfigurationInterface
 
     /**
      * Builds the defaults node definition.
-     *
-     * @param ArrayNodeDefinition $node
      */
     private function addDefaultsSection(ArrayNodeDefinition $node): void
     {
@@ -52,9 +50,7 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * Builds the networks node definition.
-     *
-     * @param ArrayNodeDefinition $node
+     * Builds the network node definition.
      */
     private function addNetworksSection(ArrayNodeDefinition $node): void
     {
@@ -64,9 +60,10 @@ class Configuration implements ConfigurationInterface
                     ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->children()
-                            ->scalarNode('title')->defaultValue('')->end() // TODO default trans
+                            ->scalarNode('title')->isRequired()->end()
+                            ->scalarNode('domain')->isRequired()->end()
                             ->scalarNode('format')->isRequired()->end()
-                            ->scalarNode('icon')->isRequired()->end() // TODO validation
+                            ->scalarNode('icon')->isRequired()->end()
                         ->end()
                     ->end()
                 ->end()
@@ -75,9 +72,7 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * Builds the networks node definition.
-     *
-     * @param ArrayNodeDefinition $node
+     * Builds the links node definition.
      */
     private function addLinksSection(ArrayNodeDefinition $node): void
     {
@@ -87,9 +82,9 @@ class Configuration implements ConfigurationInterface
                     ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->children()
-                            ->scalarNode('icon')->isRequired()->end() // TODO validation
+                            ->scalarNode('icon')->isRequired()->end()
                             ->scalarNode('title')->defaultNull()->end()
-                            ->scalarNode('url')->isRequired()->end() // TODO validation
+                            ->scalarNode('url')->isRequired()->end()
                         ->end()
                     ->end()
                 ->end()

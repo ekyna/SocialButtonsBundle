@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SocialButtonsBundle\Model;
 
 /**
@@ -11,13 +13,11 @@ final class Icons
 {
     /**
      * Returns the constant choices.
-     *
-     * @return array
      */
-    public static function getChoices()
+    public static function getChoices(): array
     {
         $choices = [];
-        foreach (static::getConfig() as $constant => $config) {
+        foreach (self::getConfig() as $constant => $config) {
             $choices[$config[0]] = $constant;
         }
 
@@ -27,7 +27,7 @@ final class Icons
     /**
      * Returns the configured icons.
      */
-    public static function getConfig()
+    public static function getConfig(): array
     {
         return [
             'bitbucket'      => ['Bitbucket'],

@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SocialButtonsBundle\Service;
 
 use Ekyna\Bundle\SocialButtonsBundle\Exception\InvalidArgumentException;
 use Ekyna\Bundle\SocialButtonsBundle\Model\Button;
 use Ekyna\Bundle\SocialButtonsBundle\Model\Subject;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class SocialHelper
@@ -14,27 +16,13 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class SocialHelper
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
+    private array               $config;
 
-    /**
-     * @var array
-     */
-    private $config;
-
-
-    /**
-     * Constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param array               $config
-     */
     public function __construct(TranslatorInterface $translator, array $config)
     {
         $this->translator = $translator;
-        $this->config     = array_merge($this->getDefaults(), $config);
+        $this->config = array_merge($this->getDefaults(), $config);
     }
 
     /**
@@ -65,36 +53,35 @@ class SocialHelper
      *
      * @param string  $name    The network name
      * @param Subject $subject The subject to share
-     *
-     * @return Button
      */
     public function createShareButton(string $name, Subject $subject): Button
     {
         if (!array_key_exists($name, $this->config)) {
-            throw new InvalidArgumentException("Unknown {$name} network.");
+            throw new InvalidArgumentException("Unknown $name network.");
         }
 
         $config = $this->config[$name];
 
-        $button        = new Button();
-        $button->name  = $name;
+        $button = new Button();
+        $button->name = $name;
+
         $button->title = $this->translator->trans($config['title'], [
             '{title}' => $subject->title,
-        ]);
-        $button->url   = str_replace(
+        ], $config['domain']);
+
+        $button->url = str_replace(
             ['[URL]', '[TITLE]'],
             [urlencode($subject->url), urlencode($subject->title)],
             $config['format']
         );
-        $button->icon  = $config['icon'];
+
+        $button->icon = $config['icon'];
 
         return $button;
     }
 
     /**
      * Returns the configured networks names.
-     *
-     * @return array
      */
     public function getNetworksNames(): array
     {
@@ -103,25 +90,26 @@ class SocialHelper
 
     /**
      * Returns the default configuration.
-     *
-     * @return array
      */
     private function getDefaults(): array
     {
         return [
             'facebook'  => [
-                'title'  => 'ekyna_social_buttons.share.facebook',
-                'format' => 'http://www.facebook.com/share.php?u=[URL]&title=[TITLE]',
+                'title'  => 'share.facebook',
+                'domain' => 'EkynaSocialButtons',
+                'format' => 'https://www.facebook.com/share.php?u=[URL]&title=[TITLE]',
                 'icon'   => 'facebook',
             ],
             'twitter'   => [
-                'title'  => 'ekyna_social_buttons.share.twitter',
-                'format' => 'http://twitter.com/intent/tweet?status=[TITLE]+[URL]',
+                'title'  => 'share.twitter',
+                'domain' => 'EkynaSocialButtons',
+                'format' => 'https://twitter.com/intent/tweet?status=[TITLE]+[URL]',
                 'icon'   => 'twitter',
             ],
             'pinterest' => [
-                'title'  => 'ekyna_social_buttons.share.pinterest',
-                'format' => 'http://pinterest.com/pin/create/bookmarklet/?url=[URL]&is_video=false&description=[TITLE]',
+                'title'  => 'share.pinterest',
+                'domain' => 'EkynaSocialButtons',
+                'format' => 'https://pinterest.com/pin/create/bookmarklet/?url=[URL]&is_video=false&description=[TITLE]',
                 // &media=[MEDIA]
                 'icon'   => 'pinterest',
             ],

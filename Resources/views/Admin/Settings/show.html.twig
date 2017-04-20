@@ -1,6 +1,6 @@
 <div class="row show-row">
     <div class="col-md-3 show-label">
-        {{ 'ekyna_social_buttons.link.label.plural'|trans }}
+        {{ 'link.label.plural'|trans({}, 'EkynaSocialButtons') }}
     </div>
     <div class="col-md-9">
         <div class="show-widget show-widget-block">
@@ -17,7 +17,7 @@
             </p>
             {% else %}
             <p>
-                <em>{{ 'ekyna_core.value.undefined'|trans }}</em>
+                <em>{{ 'value.undefined'|trans({}, 'EkynaUi') }}</em>
             </p>
             {% endfor %}
         </div>
