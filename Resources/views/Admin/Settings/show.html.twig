@@ -15,6 +15,10 @@
                     {% endif %}
                 </a>
             </p>
+            {% else %}
+            <p>
+                <em>{{ 'ekyna_core.value.undefined'|trans }}</em>
+            </p>
             {% endfor %}
         </div>
     </div>
