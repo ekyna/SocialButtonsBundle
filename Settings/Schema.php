@@ -7,7 +7,6 @@ use Ekyna\Bundle\SettingBundle\Schema\AbstractSchema;
 use Ekyna\Bundle\SettingBundle\Schema\SettingsBuilder;
 use Ekyna\Bundle\SocialButtonsBundle\Form\Type\LinkType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints;
 
 /**
  * Class Schema
@@ -64,13 +63,5 @@ class Schema extends AbstractSchema
     public function getFormTemplate()
     {
         return 'EkynaSocialButtonsBundle:Admin/Settings:form.html.twig';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getName()
-    {
-        return 'ekyna_social_buttons_settings';
     }
 }
