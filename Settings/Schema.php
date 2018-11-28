@@ -54,7 +54,7 @@ class Schema extends AbstractSchema
      */
     public function getShowTemplate()
     {
-        return 'EkynaSocialButtonsBundle:Admin/Settings:show.html.twig';
+        return '@EkynaSocialButtons/Admin/Settings/show.html.twig';
     }
 
     /**
@@ -62,6 +62,6 @@ class Schema extends AbstractSchema
      */
     public function getFormTemplate()
     {
-        return 'EkynaSocialButtonsBundle:Admin/Settings:form.html.twig';
+        return '@EkynaSocialButtons/Admin/Settings/form.html.twig';
     }
 }
