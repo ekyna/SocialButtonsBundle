@@ -42,7 +42,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('icon_prefix')->defaultValue('fa fa-')->cannotBeEmpty()->end()
                         ->scalarNode('template')
-                            ->defaultValue('EkynaSocialButtonsBundle::buttons.html.twig')
+                            ->defaultValue('@EkynaSocialButtons/buttons.html.twig')
                             ->cannotBeEmpty()
                         ->end()
                     ->end()

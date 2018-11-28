@@ -15,7 +15,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * Class ButtonsExtension
  * @package Ekyna\Bundle\SocialButtonsBundle\Twig
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class ButtonsExtension extends \Twig_Extension
 {
@@ -40,12 +40,7 @@ class ButtonsExtension extends \Twig_Extension
     private $config;
 
     /**
-     * @var \Twig_Environment
-     */
-    private $environment;
-
-    /**
-     * @var \Twig_Template
+     * @var \Twig_TemplateWrapper
      */
     private $defaultTemplate;
 
@@ -60,17 +55,8 @@ class ButtonsExtension extends \Twig_Extension
     public function __construct(EventDispatcherInterface $dispatcher, Networks $networks, array $config)
     {
         $this->dispatcher = $dispatcher;
-        $this->networks   = $networks;
-        $this->config     = $config;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function initRuntime(\Twig_Environment $environment)
-    {
-        $this->environment     = $environment;
-        $this->defaultTemplate = $environment->loadTemplate($this->config['template']);
+        $this->networks = $networks;
+        $this->config = $config;
     }
 
     /**
@@ -89,19 +75,33 @@ class ButtonsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('social_link_buttons',  [$this, 'renderSocialLinkButtons'],  ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('social_share_buttons', [$this, 'renderSocialShareButtons'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('social_share_button',  [$this, 'renderSocialShareButton'],  ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction(
+                'social_link_buttons',
+                [$this, 'renderSocialLinkButtons'],
+                ['is_safe' => ['html'], 'needs_environment' => true]
+            ),
+            new \Twig_SimpleFunction(
+                'social_share_buttons',
+                [$this, 'renderSocialShareButtons'],
+                ['is_safe' => ['html'], 'needs_environment' => true]
+            ),
+            new \Twig_SimpleFunction(
+                'social_share_button',
+                [$this, 'renderSocialShareButton'],
+                ['is_safe' => ['html'], 'needs_environment' => true]
+            ),
         ];
     }
 
     /**
      * Renders the social link buttons.
      *
-     * @param array $parameters
+     * @param \Twig_Environment $env
+     * @param array             $parameters
+     *
      * @return string
      */
-    public function renderSocialLinkButtons(array $parameters = [])
+    public function renderSocialLinkButtons(\Twig_Environment $env, array $parameters = [])
     {
         $links = [];
         if ($this->settingsManager) {
@@ -114,8 +114,8 @@ class ButtonsExtension extends \Twig_Extension
                     ->setName($name)
                     ->setIcon($config['icon'])
                     ->setUrl($config['url'])
-                    ->setTitle($config['title'])
-                ;
+                    ->setTitle($config['title']);
+
                 $links[] = $link;
             }
         }
@@ -131,7 +131,8 @@ class ButtonsExtension extends \Twig_Extension
             $attr = array_replace($attr, $parameters['attr']);
         }
 
-        $template = $this->resolveTemplate(isset($parameters['template']) ?: null);
+        $name = isset($parameters['template']) ? $parameters['template'] : null;
+        $template = $this->resolveTemplate($env, $name);
 
         return $template->renderBlock('link_buttons', [
             'icon_prefix' => $this->config['icon_prefix'],
@@ -143,14 +144,15 @@ class ButtonsExtension extends \Twig_Extension
     /**
      * Renders the social share buttons.
      *
-     * @param array $parameters
+     * @param \Twig_Environment $env
+     * @param array             $parameters
+     *
      * @return string
      */
-    public function renderSocialShareButtons(array $parameters = [])
+    public function renderSocialShareButtons(\Twig_Environment $env, array $parameters = [])
     {
         $subject = $this->resolveSubject($parameters);
-        $networks = isset($parameters['networks']) ? (array) $parameters['networks'] : [];
-        $template = $this->resolveTemplate(isset($parameters['template']) ?: null);
+        $networks = isset($parameters['networks']) ? (array)$parameters['networks'] : [];
 
         $buttons = $this->networks->createShareButtons($subject, $networks);
 
@@ -165,6 +167,9 @@ class ButtonsExtension extends \Twig_Extension
             $attr = array_replace($attr, $parameters['attr']);
         }
 
+        $name = isset($parameters['template']) ? $parameters['template'] : null;
+        $template = $this->resolveTemplate($env, $name);
+
         return $template->renderBlock('share_buttons', [
             'icon_prefix' => $this->config['icon_prefix'],
             'buttons'     => $buttons,
@@ -175,19 +180,24 @@ class ButtonsExtension extends \Twig_Extension
     /**
      * Renders the social share buttons.
      *
-     * @param array $parameters
+     * @param \Twig_Environment $env
+     * @param array             $parameters
+     *
      * @return string
      */
-    public function renderSocialShareButton(array $parameters = [])
+    public function renderSocialShareButton(\Twig_Environment $env, array $parameters = [])
     {
         if (!array_key_exists('network', $parameters)) {
             throw new InvalidArgumentException('Network is mandatory.');
         }
+
         $network = $parameters['network'];
-        $template = $this->resolveTemplate(isset($parameters['template']) ?: null);
         $subject = $this->resolveSubject($parameters);
 
         $button = $this->networks->createShareButton($network, $subject);
+
+        $name = isset($parameters['template']) ? $parameters['template'] : null;
+        $template = $this->resolveTemplate($env, $name);
 
         return $template->renderBlock('share_button', [
             'icon_prefix' => $this->config['icon_prefix'],
@@ -199,6 +209,7 @@ class ButtonsExtension extends \Twig_Extension
      * Resolves the share subject.
      *
      * @param array $parameters
+     *
      * @return Subject
      * @throws SubjectNotFoundException
      */
@@ -208,6 +219,7 @@ class ButtonsExtension extends \Twig_Extension
             $subject = new Subject();
             $subject->url = $parameters['url'];
             $subject->title = $parameters['title'];
+
             return $subject;
         }
 
@@ -223,23 +235,21 @@ class ButtonsExtension extends \Twig_Extension
     /**
      * Resolves the template to use to render the button(s).
      *
-     * @param string $name
-     * @return \Twig_Template
+     * @param \Twig_Environment $env
+     * @param string            $name
+     *
+     * @return \Twig_TemplateWrapper
      */
-    private function resolveTemplate($name = null)
+    private function resolveTemplate(\Twig_Environment $env, $name = null)
     {
         if (0 < strlen($name)) {
-            /** @noinspection PhpIncompatibleReturnTypeInspection */
-            return $this->environment->loadTemplate($name);
+            return $env->load($name);
         }
-        return $this->defaultTemplate;
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'ekyna_social_buttons';
+        if ($this->defaultTemplate) {
+            return $this->defaultTemplate;
+        }
+
+        return $this->defaultTemplate = $env->load($this->config['template']);
     }
 }
