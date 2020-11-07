@@ -1,6 +1,6 @@
 <?php
 
-namespace Ekyna\Bundle\SocialButtonsBundle\Settings;
+namespace Ekyna\Bundle\SocialButtonsBundle\Service;
 
 use Ekyna\Bundle\CoreBundle\Form\Type\CollectionType;
 use Ekyna\Bundle\SettingBundle\Schema\AbstractSchema;
@@ -9,14 +9,14 @@ use Ekyna\Bundle\SocialButtonsBundle\Form\Type\LinkType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class Schema
- * @package Ekyna\Bundle\SocialButtonsBundle\Settings
+ * Class SettingSchema
+ * @package Ekyna\Bundle\SocialButtonsBundle\Service
  * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-class Schema extends AbstractSchema
+class SettingSchema extends AbstractSchema
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function buildSettings(SettingsBuilder $builder)
     {
@@ -28,7 +28,7 @@ class Schema extends AbstractSchema
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -42,7 +42,7 @@ class Schema extends AbstractSchema
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getLabel()
     {
@@ -50,7 +50,7 @@ class Schema extends AbstractSchema
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getShowTemplate()
     {
@@ -58,7 +58,7 @@ class Schema extends AbstractSchema
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getFormTemplate()
     {

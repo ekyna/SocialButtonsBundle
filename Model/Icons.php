@@ -25,7 +25,7 @@ final class Icons
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the configured icons.
      */
     public static function getConfig()
     {

@@ -1,37 +1,37 @@
 {% block link_buttons %}
-{% spaceless %}
+{% apply spaceless %}
 <ul{{ block('attributes') }}>
     {% for link in links %}
         <li>{{ block('link_button') }}</li>
     {% endfor %}
 </ul>
-{% endspaceless %}
+{% endapply %}
 {% endblock link_buttons %}
 
 {% block link_button %}
-{% spaceless %}
+{% apply spaceless %}
 <a class="social-link-button social-link-{{ link.name }}" href="{{ link.url }}" title="{{ link.title }}">
     <i class="{{ icon_prefix ~ link.icon }}"></i>
 </a>
-{% endspaceless %}
+{% endapply %}
 {% endblock link_button %}
 
 {% block share_buttons %}
-{% spaceless %}
+{% apply spaceless %}
 <ul{{ block('attributes') }}>
     {% for button in buttons %}
         <li>{{ block('share_button') }}</li>
     {% endfor %}
 </ul>
-{% endspaceless %}
+{% endapply %}
 {% endblock share_buttons %}
 
 {% block share_button %}
-{% spaceless %}
+{% apply spaceless %}
 <a class="social-share-button social-share-{{ button.name }}" href="{{ button.url }}" title="{{ button.title }}">
     <i class="{{ icon_prefix ~ button.icon }}"></i>
 </a>
-{% endspaceless %}
+{% endapply %}
 {% endblock share_button %}
 
 {% block attributes %}

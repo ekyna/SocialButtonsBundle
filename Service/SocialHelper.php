@@ -1,18 +1,18 @@
 <?php
 
-namespace Ekyna\Bundle\SocialButtonsBundle\Helper;
+namespace Ekyna\Bundle\SocialButtonsBundle\Service;
 
 use Ekyna\Bundle\SocialButtonsBundle\Exception\InvalidArgumentException;
-use Ekyna\Bundle\SocialButtonsBundle\Share\Button;
-use Ekyna\Bundle\SocialButtonsBundle\Share\Subject;
+use Ekyna\Bundle\SocialButtonsBundle\Model\Button;
+use Ekyna\Bundle\SocialButtonsBundle\Model\Subject;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Class Networks
- * @package Ekyna\Bundle\SocialButtonsBundle\Helper
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * Class SocialHelper
+ * @package Ekyna\Bundle\SocialButtonsBundle\Service
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-class Networks
+class SocialHelper
 {
     /**
      * @var TranslatorInterface
@@ -42,9 +42,10 @@ class Networks
      *
      * @param Subject $subject The subject to share
      * @param array   $names   The networks name
+     *
      * @return Button[]
      */
-    public function createShareButtons(Subject $subject, array $names = [])
+    public function createShareButtons(Subject $subject, array $names = []): array
     {
         if (empty($names)) {
             $names = $this->getNetworksNames();
@@ -62,28 +63,30 @@ class Networks
     /**
      * Creates the share button.
      *
-     * @param string $name     The network name
+     * @param string  $name    The network name
      * @param Subject $subject The subject to share
+     *
      * @return Button
      */
-    public function createShareButton($name, Subject $subject)
+    public function createShareButton(string $name, Subject $subject): Button
     {
         if (!array_key_exists($name, $this->config)) {
             throw new InvalidArgumentException("Unknown {$name} network.");
         }
+
         $config = $this->config[$name];
 
-        $button = new Button();
-        $button->name = $name;
+        $button        = new Button();
+        $button->name  = $name;
         $button->title = $this->translator->trans($config['title'], [
             '{title}' => $subject->title,
         ]);
-        $button->url = str_replace(
+        $button->url   = str_replace(
             ['[URL]', '[TITLE]'],
             [urlencode($subject->url), urlencode($subject->title)],
             $config['format']
         );
-        $button->icon = $config['icon'];
+        $button->icon  = $config['icon'];
 
         return $button;
     }
@@ -93,7 +96,7 @@ class Networks
      *
      * @return array
      */
-    public function getNetworksNames()
+    public function getNetworksNames(): array
     {
         return array_keys($this->config);
     }
@@ -103,7 +106,7 @@ class Networks
      *
      * @return array
      */
-    private function getDefaults()
+    private function getDefaults(): array
     {
         return [
             'facebook'  => [
@@ -116,14 +119,10 @@ class Networks
                 'format' => 'http://twitter.com/intent/tweet?status=[TITLE]+[URL]',
                 'icon'   => 'twitter',
             ],
-            'google'    => [
-                'title'  => 'ekyna_social_buttons.share.google',
-                'format' => 'https://plus.google.com/share?url=[URL]',
-                'icon'   => 'google-plus',
-            ],
             'pinterest' => [
                 'title'  => 'ekyna_social_buttons.share.pinterest',
-                'format' => 'http://pinterest.com/pin/create/bookmarklet/?url=[URL]&is_video=false&description=[TITLE]', // &media=[MEDIA]
+                'format' => 'http://pinterest.com/pin/create/bookmarklet/?url=[URL]&is_video=false&description=[TITLE]',
+                // &media=[MEDIA]
                 'icon'   => 'pinterest',
             ],
         ];
