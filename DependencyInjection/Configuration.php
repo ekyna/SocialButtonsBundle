@@ -33,7 +33,7 @@ class Configuration implements ConfigurationInterface
      *
      * @param ArrayNodeDefinition $node
      */
-    private function addDefaultsSection(ArrayNodeDefinition $node)
+    private function addDefaultsSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -56,7 +56,7 @@ class Configuration implements ConfigurationInterface
      *
      * @param ArrayNodeDefinition $node
      */
-    private function addNetworksSection(ArrayNodeDefinition $node)
+    private function addNetworksSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -79,7 +79,7 @@ class Configuration implements ConfigurationInterface
      *
      * @param ArrayNodeDefinition $node
      */
-    private function addLinksSection(ArrayNodeDefinition $node)
+    private function addLinksSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()

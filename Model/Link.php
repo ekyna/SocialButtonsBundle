@@ -7,7 +7,7 @@ namespace Ekyna\Bundle\SocialButtonsBundle\Model;
  * @package Ekyna\Bundle\SocialButtonsBundle\Model
  * @author  Etienne Dauvergne <contact@ekyna.com>
  */
-class Link
+final class Link
 {
     /**
      * @var string

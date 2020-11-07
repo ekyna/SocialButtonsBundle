@@ -2,15 +2,15 @@
 
 namespace Ekyna\Bundle\SocialButtonsBundle\Event;
 
-use Ekyna\Bundle\SocialButtonsBundle\Share\Subject;
+use Ekyna\Bundle\SocialButtonsBundle\Model\Subject;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class SubjectEvent
  * @package Ekyna\Bundle\SocialButtonsBundle\Event
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-class SubjectEvent extends Event
+final class SubjectEvent extends Event
 {
     /**
      * @var array
@@ -37,11 +37,13 @@ class SubjectEvent extends Event
      * Sets the parameters.
      *
      * @param array $parameters
+     *
      * @return SubjectEvent
      */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters): SubjectEvent
     {
         $this->parameters = $parameters;
+
         return $this;
     }
 
@@ -50,7 +52,7 @@ class SubjectEvent extends Event
      *
      * @return array
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -59,11 +61,13 @@ class SubjectEvent extends Event
      * Sets the subject.
      *
      * @param Subject $subject
+     *
      * @return SubjectEvent
      */
-    public function setSubject(Subject $subject)
+    public function setSubject(Subject $subject): SubjectEvent
     {
         $this->subject = $subject;
+
         return $this;
     }
 
@@ -72,7 +76,7 @@ class SubjectEvent extends Event
      *
      * @return Subject
      */
-    public function getSubject()
+    public function getSubject(): ?Subject
     {
         return $this->subject;
     }

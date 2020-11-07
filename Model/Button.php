@@ -1,13 +1,13 @@
 <?php
 
-namespace Ekyna\Bundle\SocialButtonsBundle\Share;
+namespace Ekyna\Bundle\SocialButtonsBundle\Model;
 
 /**
  * Class Button
- * @package Ekyna\Bundle\SocialButtonsBundle\Button
+ * @package Ekyna\Bundle\SocialButtonsBundle\Model
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
-class Button
+final class Button
 {
     public $name;
     public $title;
