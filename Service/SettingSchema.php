@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Ekyna\Bundle\SocialButtonsBundle\Service;
 
 use Ekyna\Bundle\SettingBundle\Schema\AbstractSchema;
-use Ekyna\Bundle\SettingBundle\Schema\SettingsBuilder;
+use Ekyna\Bundle\SettingBundle\Schema\SettingBuilder;
 use Ekyna\Bundle\SocialButtonsBundle\Form\Type\LinkType;
 use Ekyna\Bundle\UiBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,7 +20,7 @@ use function Symfony\Component\Translation\t;
  */
 class SettingSchema extends AbstractSchema
 {
-    public function buildSettings(SettingsBuilder $builder): void
+    public function buildSettings(SettingBuilder $builder): void
     {
         $builder
             ->setDefaults(array_merge([
