@@ -26,7 +26,7 @@ final class Link
 
     public function getName(): ?string
     {
-        return 0 < strlen($this->name) ? $this->name : $this->icon;
+        return $this->name;
     }
 
     public function setIcon(?string $icon): Link
